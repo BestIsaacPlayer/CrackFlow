@@ -8,10 +8,10 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final List<Task> tasks = [
-    Task(title: "Wash the dishes", deadline: "Today", done: true),
-    Task(title: "Walk the dog", deadline: "Tomorrow", done: true),
-    Task(title: "Take out the trash", deadline: "This month", done: false),
-    Task(title: "Take a shower", deadline: "This week", done: false)
+    Task(title: "Wash the dishes", deadline: "Today", done: true, priority: "High"),
+    Task(title: "Walk the dog", deadline: "Tomorrow", done: true, priority: "Medium"),
+    Task(title: "Take out the trash", deadline: "This month", done: false, priority: "High"),
+    Task(title: "Take a shower", deadline: "This week", done: false, priority: "Low")
   ];
 
   @override
@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget {
             Expanded(child: ListView.builder(
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
-                  return TaskCard(title: tasks[index].title, subtitle: "Deadline: ${tasks[index].deadline}", icon: tasks[index].done ? Icons.check_circle : Icons.radio_button_unchecked);
+                  var task = tasks[index];
+                  return TaskCard(title: task.title, subtitle: "Deadline: ${task.deadline} | Priority: ${task.priority}", icon: task.done ? Icons.check_circle : Icons.radio_button_unchecked);
                 }
             ))
           ],
@@ -40,8 +41,9 @@ class Task {
   final String title;
   final String deadline;
   final bool done;
+  final String priority;
 
-  Task({required this.title, required this.deadline, required this.done});
+  Task({required this.title, required this.deadline, required this.done, required this.priority});
 }
 
 class TaskCard extends StatelessWidget {
