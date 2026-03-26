@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'CrackFlow',
         home: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text("Your tasks for today:"),
             Expanded(child: ListView.builder(
