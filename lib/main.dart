@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
         home: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text("You have ${tasks.length} tasks to do today!"),
+            SizedBox(height: 16),
             Text("Your tasks for today:"),
             Expanded(child: ListView.builder(
                 itemCount: tasks.length,
