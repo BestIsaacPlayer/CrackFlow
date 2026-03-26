@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             Expanded(child: ListView.builder(
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
-                  return Text(tasks[index].title);
+                  return TaskCard(title: tasks[index].title, subtitle: "Deadline: ${tasks[index].deadline}", icon: Icons.favorite);
                 }
             ))
           ],
