@@ -17,13 +17,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CrackFlow',
-      home: ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            return Text(tasks[index].title);
-          }
-      ),
+        title: 'CrackFlow',
+        home: Column(
+          children: [
+            Text("Your tasks for today:"),
+            Expanded(child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (context, index) {
+                  return Text(tasks[index].title);
+                }
+            ))
+          ],
+        )
     );
   }
 }
