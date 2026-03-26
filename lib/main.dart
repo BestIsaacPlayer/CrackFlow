@@ -18,7 +18,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CrackFlow',
-      home: Text("CrackFlow")
+      home: ListView.builder(
+          itemCount: tasks.length,
+          itemBuilder: (context, index) {
+            return Text(tasks[index].title);
+          }
+      ),
     );
   }
 }
