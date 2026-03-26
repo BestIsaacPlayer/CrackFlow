@@ -55,12 +55,14 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: Icon(icon),
-        title: Text(title),
-        subtitle: Text(subtitle),
-      ),
-    );
+    return Padding(
+        padding: EdgeInsets.all(16),
+        child: Card(
+          child: ListTile(
+            leading: Icon(icon),
+            title: Text(title),
+            subtitle: Text(subtitle),
+          ),
+        ));
   }
 }
