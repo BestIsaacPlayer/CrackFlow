@@ -38,31 +38,36 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CrackFlow',
-      home: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            "You have ${tasks.where((task) => task.done).length} tasks to do today!",
+      home: Scaffold(
+        appBar: AppBar(title: Text("CrackFlow")),
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "You have ${tasks.where((task) => task.done).length} tasks to do today!",
+              ),
+              SizedBox(height: 16),
+              Text("Your tasks for today:"),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: tasks.length,
+                  itemBuilder: (context, index) {
+                    var task = tasks[index];
+                    return TaskCard(
+                      title: task.title,
+                      subtitle:
+                          "Deadline: ${task.deadline} | Priority: ${task.priority}",
+                      icon: task.done
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 16),
-          Text("Your tasks for today:"),
-          Expanded(
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                var task = tasks[index];
-                return TaskCard(
-                  title: task.title,
-                  subtitle:
-                      "Deadline: ${task.deadline} | Priority: ${task.priority}",
-                  icon: task.done
-                      ? Icons.check_circle
-                      : Icons.radio_button_unchecked,
-                );
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
