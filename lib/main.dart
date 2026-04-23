@@ -5,9 +5,23 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
-  final List<Task> tasks = [
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(title: 'CrackFlow', home: HomeScreen());
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Task> tasks = [
     Task(
       title: "Wash the dishes",
       deadline: "Today",
@@ -36,42 +50,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CrackFlow',
-      home: Scaffold(
-        appBar: AppBar(title: Text("CrackFlow")),
-        body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "You have ${tasks.where((task) => task.done).length} tasks to do today!",
+    return Scaffold(
+      appBar: AppBar(title: Text("CrackFlow")),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "You have ${tasks.where((task) => task.done).length} tasks to do today!",
+            ),
+            SizedBox(height: 16),
+            Text("Your tasks for today:"),
+            Expanded(
+              child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (context, index) {
+                  var task = tasks[index];
+                  return TaskCard(
+                    title: task.title,
+                    subtitle:
+                        "Deadline: ${task.deadline} | Priority: ${task.priority}",
+                    icon: task.done
+                        ? Icons.check_circle
+                        : Icons.radio_button_unchecked,
+                  );
+                },
               ),
-              SizedBox(height: 16),
-              Text("Your tasks for today:"),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: tasks.length,
-                  itemBuilder: (context, index) {
-                    var task = tasks[index];
-                    return TaskCard(
-                      title: task.title,
-                      subtitle:
-                          "Deadline: ${task.deadline} | Priority: ${task.priority}",
-                      icon: task.done
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }
