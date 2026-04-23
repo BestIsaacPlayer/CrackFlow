@@ -131,7 +131,18 @@ class AddTaskScreen extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
-            ElevatedButton(onPressed: () {}, child: Text("Save Task")),
+            ElevatedButton(
+              onPressed: () {
+                final newTask = Task(
+                  title: titleController.text,
+                  deadline: deadlineController.text,
+                  done: false,
+                  priority: priorityController.text,
+                );
+                Navigator.pop(context, newTask);
+              },
+              child: Text("Save Task"),
+            ),
           ],
         ),
       ),
