@@ -55,11 +55,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final Task? newTask = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddTaskScreen()),
           );
+          if (newTask != null) {
+            setState(() {
+              TaskRepository.tasks.add(newTask);
+            });
+          }
         },
         child: Icon(Icons.add),
       ),
