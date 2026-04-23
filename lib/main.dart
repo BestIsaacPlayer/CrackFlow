@@ -88,3 +88,15 @@ class TaskCard extends StatelessWidget {
     );
   }
 }
+
+class AddTaskScreen extends StatelessWidget {
+  const AddTaskScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("New Task")),
+      body: Center(child: Text("Task Creation Form")),
+    );
+  }
+}
