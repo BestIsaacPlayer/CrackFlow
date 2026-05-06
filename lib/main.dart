@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   var task = TaskRepository.tasks[index];
                   return Dismissible(
                     key: ValueKey(task.title),
+                    direction: DismissDirection.startToEnd,
                     onDismissed: (direction) {
                       setState(() {
                         TaskRepository.tasks.remove(task);
