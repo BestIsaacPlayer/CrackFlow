@@ -58,9 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: task.title,
                       subtitle:
                           "Deadline: ${task.deadline} | Priority: ${task.priority}",
-                      icon: task.done
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
+                      done: task.done,
+                      onChanged: (value) {
+                        setState(() {
+                          task.done = value!;
+                        });
+                      },
                       onTap: () async {
                         final Task? updatedTask = await Navigator.push(
                           context,
