@@ -105,12 +105,14 @@ class TaskCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final IconData icon;
+  final VoidCallback? onTap;
 
   const TaskCard({
     super.key,
     required this.title,
     required this.subtitle,
     required this.icon,
+    this.onTap
   });
 
   @override
@@ -119,9 +121,11 @@ class TaskCard extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: Card(
         child: ListTile(
+          onTap: onTap,
           leading: Icon(icon),
           title: Text(title),
           subtitle: Text(subtitle),
+          trailing: Icon(Icons.chevron_right),
         ),
       ),
     );
