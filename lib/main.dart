@@ -56,8 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: TaskCard(
                       title: task.title,
-                      subtitle:
-                          "Deadline: ${task.deadline} | Priority: ${task.priority}",
+                      deadline: task.deadline,
+                      priority: task.priority,
                       done: task.done,
                       onChanged: (value) {
                         setState(() {
@@ -120,7 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class TaskCard extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String deadline;
+  final String priority;
   final bool done;
   final ValueChanged<bool?>? onChanged;
   final VoidCallback? onTap;
@@ -128,7 +129,8 @@ class TaskCard extends StatelessWidget {
   const TaskCard({
     super.key,
     required this.title,
-    required this.subtitle,
+    required this.deadline,
+    required this.priority,
     required this.done,
     this.onChanged,
     this.onTap
@@ -153,7 +155,20 @@ class TaskCard extends StatelessWidget {
                     : TextDecoration.none
             ),
           ),
-          subtitle: Text(subtitle),
+          subtitle: RichText(
+              text: TextSpan(
+                style: TextStyle(color: Colors.black),
+                children: [
+                  TextSpan(text: "Deadline: $deadline | Priority: "),
+                  TextSpan(
+                    text: priority,
+                    style: TextStyle(
+                      color: priority == "Low" ? Colors.green : priority == "Medium" ? Colors.yellow : priority == "High" ? Colors.red : Colors.black
+                    )
+                  )
+                ]
+              )
+          ),
           trailing: Icon(Icons.chevron_right),
         ),
       ),
