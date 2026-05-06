@@ -31,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "You have ${TaskRepository.tasks
-                  .where((task) => task.done)
-                  .length} tasks to do today!",
+              "You have ${TaskRepository.tasks.where((task) => task.done).length} tasks to do today!",
             ),
             SizedBox(height: 16),
             Text("Your tasks for today:"),
@@ -43,20 +41,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   var task = TaskRepository.tasks[index];
                   return Dismissible(
-                      key: ValueKey(task.title),
-                      onDismissed: (direction) {
-                        setState(() {
-                          TaskRepository.tasks.remove(task);
-                        });
-                      },
-                      child: TaskCard(
-                        title: task.title,
-                        subtitle:
-                        "Deadline: ${task.deadline} | Priority: ${task.priority}",
-                        icon: task.done
-                            ? Icons.check_circle
-                            : Icons.radio_button_unchecked,
-                      )
+                    key: ValueKey(task.title),
+                    onDismissed: (direction) {
+                      setState(() {
+                        TaskRepository.tasks.remove(task);
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Task ${task.title} has been removed!"),
+                        ),
+                      );
+                    },
+                    child: TaskCard(
+                      title: task.title,
+                      subtitle:
+                          "Deadline: ${task.deadline} | Priority: ${task.priority}",
+                      icon: task.done
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                    ),
                   );
                 },
               ),
@@ -73,15 +77,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   AddTaskScreen(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
-                final offsetAnimation = Tween<Offset>(
-                  begin: Offset(1.0, 0.0),
-                  end: Offset.zero,
-                ).animate(animation);
-                return SlideTransition(
-                  position: offsetAnimation,
-                  child: child,
-                );
-              },
+                    final offsetAnimation = Tween<Offset>(
+                      begin: Offset(1.0, 0.0),
+                      end: Offset.zero,
+                    ).animate(animation);
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
             ),
           );
           if (newTask != null) {
