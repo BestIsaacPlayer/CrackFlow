@@ -61,6 +61,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: task.done
                           ? Icons.check_circle
                           : Icons.radio_button_unchecked,
+                      onTap: () async {
+                        final Task? updatedTask = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditTaskScreen(task: task)
+                          )
+                        );
+
+                        if (updatedTask != null) {
+                          setState(() {
+                            TaskRepository.tasks[index] = updatedTask;
+                          });
+                        }
+                      },
                     ),
                   );
                 },
