@@ -118,14 +118,16 @@ class _HomeScreenState extends State<HomeScreen> {
 class TaskCard extends StatelessWidget {
   final String title;
   final String subtitle;
-  final IconData icon;
+  final bool done;
+  final ValueChanged<bool?>? onChanged;
   final VoidCallback? onTap;
 
   const TaskCard({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.icon,
+    required this.done,
+    this.onChanged,
     this.onTap
   });
 
@@ -136,8 +138,18 @@ class TaskCard extends StatelessWidget {
       child: Card(
         child: ListTile(
           onTap: onTap,
-          leading: Icon(icon),
-          title: Text(title),
+          leading: Checkbox(
+            value: done,
+            onChanged: onChanged,
+          ),
+          title: Text(
+            title,
+            style: TextStyle(
+                decoration: done
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none
+            ),
+          ),
           subtitle: Text(subtitle),
           trailing: Icon(Icons.chevron_right),
         ),
