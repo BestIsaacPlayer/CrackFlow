@@ -187,3 +187,61 @@ class AddTaskScreen extends StatelessWidget {
     );
   }
 }
+
+class EditTaskScreen extends StatelessWidget {
+  EditTaskScreen({super.key, required this.task});
+
+  final Task task;
+
+  late final TextEditingController titleController = TextEditingController(text: task.title);
+  late final TextEditingController deadlineController = TextEditingController(text: task.deadline);
+  late final TextEditingController priorityController = TextEditingController(text: task.priority);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Edit Task")),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: InputDecoration(
+                labelText: "Task Title",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: deadlineController,
+              decoration: InputDecoration(
+                labelText: "Task Deadline",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: priorityController,
+              decoration: InputDecoration(
+                labelText: "Task Priority",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final newTask = Task(
+                  title: titleController.text,
+                  deadline: deadlineController.text,
+                  done: false,
+                  priority: priorityController.text,
+                );
+                Navigator.pop(context, newTask);
+              },
+              child: Text("Save Task"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
