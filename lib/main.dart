@@ -46,31 +46,39 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Confirmation"),
-                    content: Text(
-                        "Are you sure that you want to delete all tasks?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text("Cancel"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            TaskRepository.tasks.clear();
-                          });
-                          Navigator.pop(context);
-                        },
-                        child: Text("Delete"),
-                      ),
-                    ],
-                  );
-                },
-              );
+              if (TaskRepository.tasks.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Task list is empty!"),
+                  ),
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Confirmation"),
+                      content: Text(
+                          "Are you sure that you want to delete all tasks?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              TaskRepository.tasks.clear();
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: Text("Delete"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             },
           )
         ],
