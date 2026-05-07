@@ -41,6 +41,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
             child: CircularProgressIndicator(),
           );
         }
+        
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error: ${snapshot.error}"),
+          );
+        }
 
         final tasks = snapshot.data ?? [];
         TaskRepository.tasks.addAll(tasks);
