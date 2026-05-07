@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      selectedFilter = "All";
+                      TaskRepository.selectedFilter = "All";
                     });
                   },
                   child: Text("All"),
@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      selectedFilter = "To Do";
+                      TaskRepository.selectedFilter = "To Do";
                     });
                   },
                   child: Text("To Do"),
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      selectedFilter = "Done";
+                      TaskRepository.selectedFilter = "Done";
                     });
                   },
                   child: Text("Done"),

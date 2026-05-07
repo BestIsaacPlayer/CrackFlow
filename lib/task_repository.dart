@@ -13,30 +13,8 @@ class Task {
 }
 
 class TaskRepository {
-  static List<Task> tasks = [
-    Task(
-      title: "Wash the dishes",
-      deadline: "Today",
-      done: true,
-      priority: "High",
-    ),
-    Task(
-      title: "Walk the dog",
-      deadline: "Tomorrow",
-      done: true,
-      priority: "Medium",
-    ),
-    Task(
-      title: "Take out the trash",
-      deadline: "This month",
-      done: false,
-      priority: "High",
-    ),
-    Task(
-      title: "Take a shower",
-      deadline: "This week",
-      done: false,
-      priority: "Low",
-    ),
-  ];
+  static List<Task> tasks = [];
+
+  static String filter = "All";
+  static String selectedFilter = "All";
 }
