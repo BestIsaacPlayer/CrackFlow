@@ -1,3 +1,4 @@
+import 'package:crack_flow/task_list_screen.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -22,23 +23,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String filter = "All";
-  String selectedFilter = "All";
-
   @override
   Widget build(BuildContext context) {
-    List<Task> filteredTasks = TaskRepository.tasks;
-
-    if (selectedFilter == "Done") {
-      filteredTasks = TaskRepository.tasks
-          .where((task) => task.done)
-          .toList();
-    } else if (selectedFilter == "To Do") {
-      filteredTasks = TaskRepository.tasks
-          .where((task) => !task.done)
-          .toList();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text("CrackFlow"),
@@ -96,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      selectedFilter = "All";
+                      TaskRepository.selectedFilter = "All";
                     });
                   },
                   child: Text("All"),
@@ -104,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      selectedFilter = "To Do";
+                      TaskRepository.selectedFilter = "To Do";
                     });
                   },
                   child: Text("To Do"),
@@ -112,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      selectedFilter = "Done";
+                      TaskRepository.selectedFilter = "Done";
                     });
                   },
                   child: Text("Done"),
@@ -121,52 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Text("Your tasks for today:"),
             Expanded(
-              child: ListView.builder(
-                itemCount: filteredTasks.length,
-                itemBuilder: (context, index) {
-                  var task = filteredTasks[index];
-                  return Dismissible(
-                    key: ValueKey(task.title),
-                    direction: DismissDirection.startToEnd,
-                    onDismissed: (direction) {
-                      setState(() {
-                        TaskRepository.tasks.remove(task);
-                      });
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Task ${task.title} has been removed!"),
-                        ),
-                      );
-                    },
-                    child: TaskCard(
-                      title: task.title,
-                      deadline: task.deadline,
-                      priority: task.priority,
-                      done: task.done,
-                      onChanged: (value) {
-                        setState(() {
-                          task.done = value!;
-                        });
-                      },
-                      onTap: () async {
-                        final Task? updatedTask = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditTaskScreen(task: task)
-                          )
-                        );
-
-                        if (updatedTask != null) {
-                          setState(() {
-                            TaskRepository.tasks[index] = updatedTask;
-                          });
-                        }
-                      },
-                    ),
-                  );
-                },
-              ),
+              child: TaskListScreen()
             ),
           ],
         ),
