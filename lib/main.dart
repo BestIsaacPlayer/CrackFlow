@@ -22,8 +22,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String filter = "All";
+  String selectedFilter = "All";
+
   @override
   Widget build(BuildContext context) {
+    List<Task> filteredTasks = TaskRepository.tasks;
+
+    if (selectedFilter == "Done") {
+      filteredTasks = TaskRepository.tasks
+          .where((task) => task.done)
+          .toList();
+    } else if (selectedFilter == "To Do") {
+      filteredTasks = TaskRepository.tasks
+          .where((task) => !task.done)
+          .toList();
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text("CrackFlow")),
       body: Center(
@@ -34,12 +49,40 @@ class _HomeScreenState extends State<HomeScreen> {
               "You have ${TaskRepository.tasks.where((task) => task.done).length} tasks to do today!",
             ),
             SizedBox(height: 16),
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedFilter = "All";
+                    });
+                  },
+                  child: Text("All"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedFilter = "To Do";
+                    });
+                  },
+                  child: Text("To Do"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedFilter = "Done";
+                    });
+                  },
+                  child: Text("Done"),
+                ),
+              ],
+            ),
             Text("Your tasks for today:"),
             Expanded(
               child: ListView.builder(
-                itemCount: TaskRepository.tasks.length,
+                itemCount: filteredTasks.length,
                 itemBuilder: (context, index) {
-                  var task = TaskRepository.tasks[index];
+                  var task = filteredTasks[index];
                   return Dismissible(
                     key: ValueKey(task.title),
                     direction: DismissDirection.startToEnd,
