@@ -40,7 +40,41 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("CrackFlow")),
+      appBar: AppBar(
+        title: Text("CrackFlow"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Confirmation"),
+                    content: Text(
+                        "Are you sure that you want to delete all tasks?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            TaskRepository.tasks.clear();
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Text("Delete"),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          )
+        ],
+      ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
