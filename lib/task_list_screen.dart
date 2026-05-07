@@ -36,6 +36,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return FutureBuilder<List<Task>>(
       future: tasksFuture,
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
         final tasks = snapshot.data ?? [];
         TaskRepository.tasks.addAll(tasks);
         return ListView.builder(
