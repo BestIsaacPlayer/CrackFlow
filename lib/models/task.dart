@@ -1,13 +1,15 @@
 class Task {
+  final int id;
   final String title;
   final String deadline;
-  bool done;
   final String priority;
+  bool done;
 
   Task({
+    required this.id,
     required this.title,
     required this.deadline,
-    required this.done,
     required this.priority,
+    required this.done
   });
 }

@@ -17,10 +17,11 @@ class TaskApiService {
       final List todos = data["todos"];
       return todos.map((todo) {
         return Task(
+          id: 0,
           title: todo["todo"],
           deadline: deadlines[random.nextInt(deadlines.length)],
-          done: todo["completed"],
-          priority: priorities[random.nextInt(priorities.length)]
+          priority: priorities[random.nextInt(priorities.length)],
+          done: todo["completed"]
         );
       }).toList();
     } else {

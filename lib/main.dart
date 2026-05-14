@@ -249,10 +249,11 @@ class AddTaskScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final newTask = Task(
+                  id: 0,
                   title: titleController.text,
                   deadline: deadlineController.text,
-                  done: false,
                   priority: priorityController.text,
+                  done: false
                 );
                 Navigator.pop(context, newTask);
               },
@@ -307,10 +308,11 @@ class EditTaskScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final newTask = Task(
+                  id: 0,
                   title: titleController.text,
                   deadline: deadlineController.text,
-                  done: false,
                   priority: priorityController.text,
+                  done: false
                 );
                 Navigator.pop(context, newTask);
               },
