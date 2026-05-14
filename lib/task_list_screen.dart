@@ -1,14 +1,13 @@
 import 'package:crack_flow/main.dart';
 import 'package:crack_flow/models/task.dart';
-import 'package:crack_flow/services/task_api_service.dart';
 import 'package:crack_flow/services/task_local_database.dart';
 import 'package:crack_flow/services/task_sync_service.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';
 
-
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});
+
   @override
   State<TaskListScreen> createState() => _TaskListScreenState();
 }
@@ -32,28 +31,20 @@ class _TaskListScreenState extends State<TaskListScreen> {
     List<Task> filteredTasks = TaskRepository.tasks;
 
     if (TaskRepository.selectedFilter == "Done") {
-      filteredTasks = TaskRepository.tasks
-          .where((task) => task.done)
-          .toList();
+      filteredTasks = TaskRepository.tasks.where((task) => task.done).toList();
     } else if (TaskRepository.selectedFilter == "To Do") {
-      filteredTasks = TaskRepository.tasks
-          .where((task) => !task.done)
-          .toList();
+      filteredTasks = TaskRepository.tasks.where((task) => !task.done).toList();
     }
 
     return FutureBuilder<List<Task>>(
       future: tasksFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
-        
+
         if (snapshot.hasError) {
-          return Center(
-            child: Text("Error: ${snapshot.error}"),
-          );
+          return Center(child: Text("Error: ${snapshot.error}"));
         }
 
         final tasks = snapshot.data ?? [];
@@ -88,10 +79,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 },
                 onTap: () async {
                   final Task? updatedTask = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditTaskScreen(task: task)
-                      )
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditTaskScreen(task: task),
+                    ),
                   );
 
                   if (updatedTask != null) {
