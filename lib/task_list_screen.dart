@@ -86,8 +86,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   );
 
                   if (updatedTask != null) {
+                    await TaskLocalDatabase.updateTask(updatedTask);
+
                     setState(() {
-                      TaskRepository.tasks[index] = updatedTask;
+                      tasksFuture = loadTasks();
                     });
                   }
                 },
