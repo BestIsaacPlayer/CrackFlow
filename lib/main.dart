@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:crack_flow/models/task.dart';
+import 'package:crack_flow/services/task_local_database.dart';
 import 'package:crack_flow/task_list_screen.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ void main() async {
 
   await Hive.initFlutter();
   await Hive.openBox("tasks");
+
+  TaskRepository.tasks = TaskLocalDatabase.getTasks();
 
   runApp(const MyApp());
 }
