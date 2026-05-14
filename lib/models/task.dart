@@ -10,6 +10,6 @@ class Task {
     required this.title,
     required this.deadline,
     required this.priority,
-    required this.done
+    required this.done,
   });
 }
