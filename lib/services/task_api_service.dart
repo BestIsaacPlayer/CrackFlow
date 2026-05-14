@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:crack_flow/task_repository.dart';
+import 'package:crack_flow/models/task.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 
@@ -17,10 +17,11 @@ class TaskApiService {
       final List todos = data["todos"];
       return todos.map((todo) {
         return Task(
+          id: Random().nextInt(1000000),
           title: todo["todo"],
           deadline: deadlines[random.nextInt(deadlines.length)],
-          done: todo["completed"],
-          priority: priorities[random.nextInt(priorities.length)]
+          priority: priorities[random.nextInt(priorities.length)],
+          done: todo["completed"]
         );
       }).toList();
     } else {

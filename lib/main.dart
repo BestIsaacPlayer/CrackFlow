@@ -1,9 +1,21 @@
+import 'dart:math';
+
+import 'package:crack_flow/models/task.dart';
+import 'package:crack_flow/services/task_local_database.dart';
 import 'package:crack_flow/task_list_screen.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  await Hive.openBox("tasks");
+
+  TaskRepository.tasks = TaskLocalDatabase.getTasks();
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -52,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text("Cancel"),
                         ),
                         TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            await TaskLocalDatabase.deleteAllTasks();
                             setState(() {
                               TaskRepository.tasks.clear();
                             });
@@ -74,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "You have ${TaskRepository.tasks.where((task) => task.done).length} tasks to do today!",
+              "You have ${TaskRepository.tasks.where((task) => !task.done).length} tasks to do today!",
             ),
             SizedBox(height: 16),
             Row(
@@ -133,6 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
           if (newTask != null) {
+            await TaskLocalDatabase.addTask(newTask);
             setState(() {
               TaskRepository.tasks.add(newTask);
             });
@@ -242,10 +256,11 @@ class AddTaskScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final newTask = Task(
+                  id: Random().nextInt(1000000),
                   title: titleController.text,
                   deadline: deadlineController.text,
-                  done: false,
                   priority: priorityController.text,
+                  done: false
                 );
                 Navigator.pop(context, newTask);
               },
@@ -300,10 +315,11 @@ class EditTaskScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final newTask = Task(
+                  id: task.id,
                   title: titleController.text,
                   deadline: deadlineController.text,
-                  done: false,
                   priority: priorityController.text,
+                  done: task.done
                 );
                 Navigator.pop(context, newTask);
               },
