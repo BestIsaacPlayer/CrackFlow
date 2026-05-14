@@ -310,7 +310,7 @@ class EditTaskScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final newTask = Task(
-                  id: Random().nextInt(1000000),
+                  id: task.id,
                   title: titleController.text,
                   deadline: deadlineController.text,
                   priority: priorityController.text,
