@@ -72,9 +72,19 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 deadline: task.deadline,
                 priority: task.priority,
                 done: task.done,
-                onChanged: (value) {
+                onChanged: (value) async {
+                  final updatedTask = Task(
+                    id: task.id,
+                    title: task.title,
+                    deadline: task.deadline,
+                    priority: task.priority,
+                    done: value ?? false,
+                  );
+
+                  await TaskLocalDatabase.updateTask(updatedTask);
+
                   setState(() {
-                    task.done = value!;
+                    tasksFuture = loadTasks();
                   });
                 },
                 onTap: () async {
