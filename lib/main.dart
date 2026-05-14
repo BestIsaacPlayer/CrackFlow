@@ -1,3 +1,4 @@
+import 'package:crack_flow/models/task.dart';
 import 'package:crack_flow/task_list_screen.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';

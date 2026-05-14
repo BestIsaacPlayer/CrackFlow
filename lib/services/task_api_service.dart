@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:crack_flow/task_repository.dart';
+import 'package:crack_flow/models/task.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 
