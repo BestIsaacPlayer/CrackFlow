@@ -1,7 +1,6 @@
 import 'package:crack_flow/main.dart';
 import 'package:crack_flow/models/task.dart';
 import 'package:crack_flow/services/task_local_database.dart';
-import 'package:crack_flow/services/task_sync_service.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -13,19 +12,6 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
-  late Future<List<Task>> tasksFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    tasksFuture = loadTasks();
-  }
-
-  Future<List<Task>> loadTasks() async {
-    await TaskSyncService.loadInitialDataIfNeeded();
-    return TaskLocalDatabase.getTasks();
-  }
-
   @override
   Widget build(BuildContext context) {
     List<Task> filteredTasks = TaskRepository.tasks;
@@ -36,76 +22,72 @@ class _TaskListScreenState extends State<TaskListScreen> {
       filteredTasks = TaskRepository.tasks.where((task) => !task.done).toList();
     }
 
-    return FutureBuilder<List<Task>>(
-      future: tasksFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    if (filteredTasks.isEmpty) {
+      return const Center(child: Text("No tasks found."));
+    }
 
-        if (snapshot.hasError) {
-          return Center(child: Text("Error: ${snapshot.error}"));
-        }
+    return ListView.builder(
+      itemCount: filteredTasks.length,
+      itemBuilder: (context, index) {
+        var task = filteredTasks[index];
+        return Dismissible(
+          key: ValueKey(task.id),
+          direction: DismissDirection.startToEnd,
+          onDismissed: (direction) async {
+            await TaskLocalDatabase.deleteTask(task.id);
+            setState(() {
+              TaskRepository.tasks.removeWhere((listTask) => listTask.id == task.id);
+            });
 
-        final tasks = snapshot.data ?? [];
-        TaskRepository.tasks.addAll(tasks);
-        return ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            var task = filteredTasks[index];
-            return Dismissible(
-              key: ValueKey(task.title),
-              direction: DismissDirection.startToEnd,
-              onDismissed: (direction) {
-                setState(() {
-                  TaskRepository.tasks.remove(task);
-                });
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Task ${task.title} has been removed!"),
-                  ),
-                );
-              },
-              child: TaskCard(
-                title: task.title,
-                deadline: task.deadline,
-                priority: task.priority,
-                done: task.done,
-                onChanged: (value) async {
-                  final updatedTask = Task(
-                    id: task.id,
-                    title: task.title,
-                    deadline: task.deadline,
-                    priority: task.priority,
-                    done: value ?? false,
-                  );
-
-                  await TaskLocalDatabase.updateTask(updatedTask);
-
-                  setState(() {
-                    tasksFuture = loadTasks();
-                  });
-                },
-                onTap: () async {
-                  final Task? updatedTask = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditTaskScreen(task: task),
-                    ),
-                  );
-
-                  if (updatedTask != null) {
-                    await TaskLocalDatabase.updateTask(updatedTask);
-
-                    setState(() {
-                      tasksFuture = loadTasks();
-                    });
-                  }
-                },
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Task ${task.title} has been removed!"),
               ),
             );
           },
+          child: TaskCard(
+            title: task.title,
+            deadline: task.deadline,
+            priority: task.priority,
+            done: task.done,
+            onChanged: (value) async {
+              final updatedTask = Task(
+                id: task.id,
+                title: task.title,
+                deadline: task.deadline,
+                priority: task.priority,
+                done: value ?? false,
+              );
+
+              await TaskLocalDatabase.updateTask(updatedTask);
+
+              setState(() {
+                int repoIndex = TaskRepository.tasks.indexWhere((t) => t.id == task.id);
+                if (repoIndex != -1) {
+                  TaskRepository.tasks[repoIndex] = updatedTask;
+                }
+              });
+            },
+            onTap: () async {
+              final Task? updatedTask = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditTaskScreen(task: task),
+                ),
+              );
+
+              if (updatedTask != null) {
+                await TaskLocalDatabase.updateTask(updatedTask);
+
+                setState(() {
+                  int repoIndex = TaskRepository.tasks.indexWhere((listTask) => listTask.id == task.id);
+                  if (repoIndex != -1) {
+                    TaskRepository.tasks[repoIndex] = updatedTask;
+                  }
+                });
+              }
+            },
+          ),
         );
       },
     );
