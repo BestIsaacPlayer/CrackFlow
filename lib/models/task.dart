@@ -3,7 +3,7 @@ class Task {
   final String title;
   final String deadline;
   final String priority;
-  bool done;
+  final bool done;
 
   Task({
     required this.id,
