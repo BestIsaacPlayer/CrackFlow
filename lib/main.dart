@@ -1,9 +1,15 @@
 import 'package:crack_flow/task_list_screen.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  await Hive.openBox("tasks");
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
