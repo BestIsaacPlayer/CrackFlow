@@ -1,6 +1,8 @@
 import 'package:crack_flow/main.dart';
 import 'package:crack_flow/models/task.dart';
 import 'package:crack_flow/services/task_api_service.dart';
+import 'package:crack_flow/services/task_local_database.dart';
+import 'package:crack_flow/services/task_sync_service.dart';
 import 'package:crack_flow/task_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
   @override
   void initState() {
     super.initState();
-    tasksFuture = TaskApiService.fetchTasks();
+    tasksFuture = loadTasks();
+  }
+
+  Future<List<Task>> loadTasks() async {
+    await TaskSyncService.loadInitialDataIfNeeded();
+    return TaskLocalDatabase.getTasks();
   }
 
   @override
