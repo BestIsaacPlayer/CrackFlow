@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "You have ${TaskRepository.tasks.where((task) => task.done).length} tasks to do today!",
+              "You have ${TaskRepository.tasks.where((task) => !task.done).length} tasks to do today!",
             ),
             SizedBox(height: 16),
             Row(
