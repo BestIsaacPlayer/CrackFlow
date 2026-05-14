@@ -64,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text("Cancel"),
                         ),
                         TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            await TaskLocalDatabase.deleteAllTasks();
                             setState(() {
                               TaskRepository.tasks.clear();
                             });
@@ -145,6 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
           if (newTask != null) {
+            await TaskLocalDatabase.addTask(newTask);
             setState(() {
               TaskRepository.tasks.add(newTask);
             });
@@ -317,7 +319,7 @@ class EditTaskScreen extends StatelessWidget {
                   title: titleController.text,
                   deadline: deadlineController.text,
                   priority: priorityController.text,
-                  done: false
+                  done: task.done
                 );
                 Navigator.pop(context, newTask);
               },
