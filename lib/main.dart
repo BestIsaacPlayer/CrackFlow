@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crack_flow/models/task.dart';
 import 'package:crack_flow/task_list_screen.dart';
 import 'package:crack_flow/task_repository.dart';
@@ -249,7 +251,7 @@ class AddTaskScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final newTask = Task(
-                  id: 0,
+                  id: Random().nextInt(1000000),
                   title: titleController.text,
                   deadline: deadlineController.text,
                   priority: priorityController.text,
@@ -308,7 +310,7 @@ class EditTaskScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final newTask = Task(
-                  id: 0,
+                  id: Random().nextInt(1000000),
                   title: titleController.text,
                   deadline: deadlineController.text,
                   priority: priorityController.text,
